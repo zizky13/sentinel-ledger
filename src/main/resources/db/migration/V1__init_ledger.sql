@@ -15,6 +15,8 @@ CREATE TABLE account_balances (
 );
 
 -- 3. Master Transaction Group (Groups the atomic multi-leg transfers)
+-- used to glue together each entries leg
+-- used for compliance check in case anomalies happens (we can know the whole transaction event series, not just single money movement)
 CREATE TABLE transactions (
                               id UUID PRIMARY KEY,
                               idempotency_key UUID UNIQUE NOT NULL,
@@ -24,6 +26,8 @@ CREATE TABLE transactions (
 );
 
 -- 4. Immutable Journal Entries (The Write Table)
+-- atomic transaction lives here
+-- defines where the money moves
 CREATE TABLE ledger_entries (
                                 id UUID PRIMARY KEY,
                                 transaction_id UUID NOT NULL REFERENCES transactions(id),

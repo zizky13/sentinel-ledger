@@ -10,6 +10,10 @@ public record AccountBalance(
         @Id UUID accountId,
         BigDecimal currentBalance
 ) {
+
+    // returns new object because:
+    // record itself is immutable
+    // avoid race conditions and side effects
     public AccountBalance add(BigDecimal amount) {
         return new AccountBalance(this.accountId, this.currentBalance.add(amount));
     }
